@@ -74,7 +74,6 @@ class Contact_Management_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/contact-management-public.css', array(), $this->version, 'all' );
-
 	}
 
 	/**
@@ -97,15 +96,13 @@ class Contact_Management_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/contact-management-public.js', array( 'jquery' ), $this->version, false );
-
 	}
 
 	public function cm_register_shortcodes(){
-		add_shortcode('cm_contact_list', array($this, 'cm_contact_list'));
-		add_shortcode('add_contact_list', array($this, 'add_contact_list'));
+		add_shortcode('cm_person_list', array($this, 'cm_person_list_callback'));
 	}
 
-	public function cm_contact_list()
+	public function cm_person_list_callback()
      {
         ob_start();
         require plugin_dir_path(__FILE__) . 'partials/contact-list.php';
@@ -113,14 +110,4 @@ class Contact_Management_Public {
         ob_end_clean();
         return $content;
     }
-	public function add_contact_list()
-     {
-        ob_start();
-        require plugin_dir_path(__FILE__) . 'partials/add-contact.php';
-        $content = ob_get_contents();
-        ob_end_clean();
-        return $content;
-    }
-
-
 }

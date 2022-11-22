@@ -29,4 +29,14 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	jQuery(document).ready(function() {
+		jQuery("select.cm_country_code").chosen({
+			disable_search_threshold: 1,
+			allow_single_deselect: true,
+			disable_search: false,
+			no_results_text: "Oops, nothing found!",
+			width: "20%"
+		})
+	});
+
 })( jQuery );

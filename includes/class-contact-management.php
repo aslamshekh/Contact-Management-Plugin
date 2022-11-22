@@ -159,6 +159,7 @@ class Contact_Management {
 		$this->loader->add_action('init',$plugin_admin,'cm_create_custom_post_type');
 		$this->loader->add_action('admin_menu',$plugin_admin,'cm_create_admin_menu');
 		$this->loader->add_action('admin_post_cm_person_add',$plugin_admin,'cm_person_add_callback');
+		$this->loader->add_action('admin_post_cm_person_contact_add',$plugin_admin,'cm_person_contact_add_callback');
 
 		
 
