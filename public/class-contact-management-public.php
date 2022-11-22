@@ -97,11 +97,19 @@ class Contact_Management_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/contact-management-public.js', array( 'jquery' ), $this->version, false );
 	}
-
+	
+	/**
+	 * Register Public shortcode to person list
+	 * @return void
+	 */
 	public function cm_register_shortcodes(){
 		add_shortcode('cm_person_list', array($this, 'cm_person_list_callback'));
 	}
-
+	
+	/**
+	 * Callback function for person listing
+	 * @return false|string
+	 */
 	public function cm_person_list_callback()
      {
         ob_start();

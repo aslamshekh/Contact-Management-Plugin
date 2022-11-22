@@ -194,42 +194,66 @@ class Contact_Management_Admin
 		
 	}
 	
+	/**
+	 * Add page for person list
+	 * @return void
+	 */
 	public function cm_person_list()
 	{
 		require plugin_dir_path(__FILE__) . 'partials/contact-management-person-list.php';
 	}
 	
+	/**
+	 * Add page for person Add
+	 * @return void
+	 */
 	public function cm_person_add()
 	{
 		require plugin_dir_path(__FILE__) . 'partials/contact-management-person-add.php';
 	}
 	
+	/**
+	 * Add page for person Details
+	 * @return void
+	 */
 	public function cm_person_detail()
 	{
 		require plugin_dir_path(__FILE__) . 'partials/contact-management-person-detail.php';
 	}
 	
+	/**
+	 * Add page for person contact add
+	 * @return void
+	 */
 	public function cm_person_contact()
 	{
 		require plugin_dir_path(__FILE__) . 'partials/contact-management-person-contact.php';
 	}
 	
+	/**
+	 * callback function for add person.
+	 * @return void
+	 */
 	public function cm_person_add_callback()
 	{
-		if ( 1 ) {
-			
-			$person_id = filter_input(INPUT_POST, 'person_id', FILTER_SANITIZE_NUMBER_INT);
-			$person_name = filter_input(INPUT_POST, 'person_name', FILTER_SANITIZE_STRING);
-			$person_email = filter_input(INPUT_POST, 'person_email', FILTER_SANITIZE_STRING);
-			$cm_action = filter_input(INPUT_POST, 'cm_action', FILTER_SANITIZE_STRING);
-			
-			if(isset($cm_action) && !empty($cm_action)){
-				$personData = array(
-					'ID'  => $cm_action,
-					'post_title'  => $person_name,
-				);
-				wp_update_post( $personData );
-				$rtn_post_id = $cm_action;
+		$person_id = filter_input(INPUT_POST, 'person_id', FILTER_SANITIZE_NUMBER_INT);
+		$person_name = filter_input(INPUT_POST, 'person_name', FILTER_SANITIZE_STRING);
+		$person_email = filter_input(INPUT_POST, 'person_email', FILTER_SANITIZE_STRING);
+		$cm_action = filter_input(INPUT_POST, 'cm_action', FILTER_SANITIZE_STRING);
+		
+		if(isset($cm_action) && !empty($cm_action)){
+			$personData = array(
+				'ID'  => $cm_action,
+				'post_title'  => $person_name,
+			);
+			wp_update_post( $personData );
+			$rtn_post_id = $cm_action;
+		} else {
+			$emailExits = $this->checkEmailExists($person_email);
+			if($emailExits == false){
+				set_transient( 'cm_error_message', esc_html__( 'This email address already used, Please try other email.', 'contact_manager' ), 45 );
+				wp_safe_redirect( admin_url( '/admin.php?page=cm-person-add' ) );
+				exit();
 			} else {
 				$personData = array(
 					'post_title'  => $person_name,
@@ -238,47 +262,70 @@ class Contact_Management_Admin
 				);
 				$rtn_post_id = wp_insert_post($personData);
 			}
-			update_post_meta($rtn_post_id, "person_id", $person_id);
-			update_post_meta($rtn_post_id, "person_name", $person_name);
-			update_post_meta($rtn_post_id, "person_email", $person_email);
-			
-			wp_safe_redirect( admin_url( '/admin.php?page=cm-person-list' ) );
 		}
+		
+		update_post_meta($rtn_post_id, "person_id", $person_id);
+		update_post_meta($rtn_post_id, "person_name", $person_name);
+		update_post_meta($rtn_post_id, "person_email", $person_email);
+		
+		wp_safe_redirect( admin_url( '/admin.php?page=cm-person-list' ) );
 	}
 	
+	/**
+	 * Function to check email exits or not
+	 * @param $person_email
+	 * @return bool
+	 */
+	public function checkEmailExists($person_email){
+		
+		$checkEmailExists = get_posts( array(
+			'posts_per_page' => -1,
+			'meta_key' => 'person_email',
+			'meta_value' => $person_email,
+			'fields' => 'ids',
+			'post_type'   => 'cm_person',
+		) );
+		if ( count( $checkEmailExists ) ) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Callback function for add contact details
+	 * @return void
+	 */
 	public function cm_person_contact_add_callback()
 	{
-		if ( 1 ) {
-			
-			$person_id = filter_input(INPUT_POST, 'person_id', FILTER_SANITIZE_NUMBER_INT);
-			$contact_id = filter_input(INPUT_POST, 'contact_id', FILTER_SANITIZE_NUMBER_INT);
-			$country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
-			$contact_number = filter_input(INPUT_POST, 'contact_number', FILTER_SANITIZE_STRING);
-			$cm_action = filter_input(INPUT_POST, 'cm_action', FILTER_SANITIZE_STRING);
-			
-			if(isset($cm_action) && !empty($cm_action)){
-				$personData = array(
-					'ID'  => $cm_action,
-					'post_title'  => $contact_number,
-				);
-				wp_update_post( $personData );
-				$rtn_post_id = $cm_action;
-			} else {
-				$personContactData = array(
-					'post_title'  => $contact_number,
-					'post_status' => 'publish',
-					'post_type'   => 'cm_person_contact',
-					'post_author' => $person_id,
-				);
-				$rtn_post_id = wp_insert_post($personContactData);
-			}
-			update_post_meta($rtn_post_id, "person_id", $person_id);
-			update_post_meta($rtn_post_id, "contact_id", $contact_id);
-			update_post_meta($rtn_post_id, "country_code", $country_code);
-			update_post_meta($rtn_post_id, "contact_number", $contact_number);
-			update_post_meta($person_id, "contact_id", $rtn_post_id);
-			
-			wp_safe_redirect( admin_url( '/admin.php?page=cm-person-list' ) );
+		$person_id = filter_input(INPUT_POST, 'person_id', FILTER_SANITIZE_NUMBER_INT);
+		$contact_id = filter_input(INPUT_POST, 'contact_id', FILTER_SANITIZE_NUMBER_INT);
+		$country_code = filter_input(INPUT_POST, 'country_code', FILTER_SANITIZE_STRING);
+		$contact_number = filter_input(INPUT_POST, 'contact_number', FILTER_SANITIZE_STRING);
+		$cm_action = filter_input(INPUT_POST, 'cm_action', FILTER_SANITIZE_STRING);
+		
+		if(isset($cm_action) && !empty($cm_action)){
+			$personData = array(
+				'ID'  => $cm_action,
+				'post_title'  => $contact_number,
+			);
+			wp_update_post( $personData );
+			$rtn_post_id = $cm_action;
+		} else {
+			$personContactData = array(
+				'post_title'  => $contact_number,
+				'post_status' => 'publish',
+				'post_type'   => 'cm_person_contact',
+				'post_author' => $person_id,
+			);
+			$rtn_post_id = wp_insert_post($personContactData);
 		}
+		update_post_meta($rtn_post_id, "person_id", $person_id);
+		update_post_meta($rtn_post_id, "contact_id", $contact_id);
+		update_post_meta($rtn_post_id, "country_code", $country_code);
+		update_post_meta($rtn_post_id, "contact_number", $contact_number);
+		update_post_meta($person_id, "contact_id", $rtn_post_id);
+		
+		wp_safe_redirect( admin_url( '/admin.php?page=cm-person-list' ) );
+		
 	}
 }

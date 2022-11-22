@@ -35,22 +35,22 @@ if ( isset($_GET[ 'post' ]) && !empty($_GET[ 'post' ]) ) {
 
 <div class="wrap">
     <div id="icon-themes" class="icon32"></div>
-    <h1 class="wp-heading-inline">Person Detail</h1>
+    <h1 class="wp-heading-inline"><?php esc_html_e( 'Person Detail', 'contact_manager' ); ?></h1>
     <table id="person_detail">
         <tr>
-            <td>ID:</td>
+            <td><?php esc_html_e( 'ID:', 'contact_manager' ); ?></td>
             <td><?php echo $person_id; ?></td>
         </tr>
         <tr>
-            <td>Name:</td>
+            <td><?php esc_html_e( 'Name:', 'contact_manager' ); ?></td>
             <td><?php echo $person_name; ?></td>
         </tr>
         <tr>
-            <td>Email:</td>
+            <td><?php esc_html_e( 'Email:', 'contact_manager' ); ?></td>
             <td><?php echo $person_email; ?></td>
         </tr>
         <tr>
-            <td>Contact:</td>
+            <td><?php esc_html_e( 'Contact:', 'contact_manager' ); ?></td>
             <td colspan="5">
                 <?php
                 if(isset($contactData) && !empty($contactData)){
@@ -62,17 +62,17 @@ if ( isset($_GET[ 'post' ]) && !empty($_GET[ 'post' ]) ) {
                     ?>
                     <table>
                         <tr>
-                            <td>Country Code</td>
-                            <td>Contact Number</td>
-                            <td>Action</td>
+                            <td><?php esc_html_e( 'Country Code', 'contact_manager' ); ?></td>
+                            <td><?php esc_html_e( 'Contact Number', 'contact_manager' ); ?></td>
+                            <td><?php esc_html_e( 'Action', 'contact_manager' ); ?></td>
                         </tr>
                         <tr>
                             <td><?php echo $country_code; ?></td>
                             <td><?php echo $contact_number; ?></td>
                             <td>
                           <span class="edit">
-                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-add&cm_action='.$wp_person_post_id ); ?>">Edit</a> | </span>
-                                <a href="<?php echo get_delete_post_link($wp_contact_post_id); ?>" class="submitdelete">Delete</a> </span>
+                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-contact&cm_action='.$wp_contact_post_id ); ?>"><?php esc_html_e( 'Edit', 'contact_manager' ); ?></a> | </span>
+                                <a href="<?php echo get_delete_post_link($wp_contact_post_id); ?>" class="submitdelete"><?php esc_html_e( 'Delete', 'contact_manager' ); ?></a> </span>
                                 </span>
                             </td>
                         </tr>

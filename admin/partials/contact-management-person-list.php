@@ -46,15 +46,18 @@ $personList = get_posts($personArgs);
 </style>
 <div class="wrap">
     <div id="icon-themes" class="icon32"></div>
-    <h1 class="wp-heading-inline">Person List</h1>
-    <a href="<?php echo admin_url( '/admin.php?page=cm-person-add' ); ?>" class="page-title-action">ADD PERSON</a>
+    <h1 class="wp-heading-inline"><?php esc_html_e( 'Person List', 'contact_manager' ); ?></h1>
+    <a href="<?php echo admin_url( '/admin.php?page=cm-person-add' ); ?>" class="page-title-action">
+	    <?php esc_html_e( 'ADD PERSON', 'contact_manager' ); ?>
+    </a>
+    
     <table id="person_list">
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact</th>
-            <th>Action</th>
+            <th><?php esc_html_e( 'ID', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Name', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Email', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Contact', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Action', 'contact_manager' ); ?></th>
         </tr>
         <?php
             if(isset($personList) && !empty($personList)){
@@ -86,7 +89,9 @@ $personList = get_posts($personArgs);
                                 } else {
                                     ?>
                                     <span class="edit">
-                                        <a class="page-title-action" href="<?php echo admin_url( '/admin.php?page=cm-person-contact&post='.$wp_person_post_id ); ?>">ADD CONTACT</a></span>
+                                        <a class="page-title-action" href="<?php echo admin_url( '/admin.php?page=cm-person-contact&post='.$wp_person_post_id ); ?>">
+                                            <?php esc_html_e( 'ADD CONTACT', 'contact_manager' ); ?>
+                                        </a></span>
                                     </span>
                                     <?php
                                 }
@@ -95,9 +100,9 @@ $personList = get_posts($personArgs);
                         
                         <td>
                           <span class="edit">
-                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-detail&post='.$wp_person_post_id ); ?>">Detail</a> | </span>
-                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-add&cm_action='.$wp_person_post_id ); ?>">Edit</a> | </span>
-                            <a href="<?php echo get_delete_post_link($wp_person_post_id); ?>" class="submitdelete">Delete</a> </span>
+                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-detail&post='.$wp_person_post_id ); ?>"><?php esc_html_e( 'Detail', 'contact_manager' ); ?></a> | </span>
+                            <a href="<?php echo admin_url( '/admin.php?page=cm-person-add&cm_action='.$wp_person_post_id ); ?>"><?php esc_html_e( 'Edit', 'contact_manager' ); ?></a> | </span>
+                            <a href="<?php echo get_delete_post_link($wp_person_post_id); ?>" class="submitdelete"><?php esc_html_e( 'Delete', 'contact_manager' ); ?></a> </span>
                           </span>
                         </td>
                     </tr>

@@ -31,22 +31,32 @@ if(isset($_GET['cm_action']) && !empty($_GET['cm_action'])){
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
     <div id="icon-themes" class="icon32"></div>  
-    <h2>Person Add</h2>  
+    <h2><?php esc_html_e( 'Person Add', 'contact_manager' ); ?></h2>
+	<?php
+	if ( get_transient( "cm_error_message" ) ) {
+		?>
+        <div id="message" class="updated error is-dismissible">
+            <p><?php esc_html_e( get_transient( "cm_error_message" ) ); ?></p>
+        </div>
+		<?php
+		delete_transient( "cm_error_message" );
+	}
+	?>
                     
     <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">                   
         <table class="form-table">
             <tr valign="top">
-            <th scope="row">ID</th>
+            <th scope="row"><?php esc_html_e( 'ID', 'contact_manager' ); ?></th>
             <td><input type="text" name="person_id" value="<?php echo esc_attr( $person_id ); ?>" required/></td>
             </tr>
             
             <tr valign="top">
-            <th scope="row">Person Name</th>
+            <th scope="row"><?php esc_html_e( 'Person Name', 'contact_manager' ); ?></th>
             <td><input type="text" name="person_name" value="<?php echo esc_attr( $person_name ); ?>" required/></td>
             </tr>
             
             <tr valign="top">
-            <th scope="row">Email</th>
+            <th scope="row"><?php esc_html_e( 'Email', 'contact_manager' ); ?></th>
             <td><input type="email" name="person_email" value="<?php echo esc_attr( $person_email ); ?>" required/></td>
             </tr>
         </table>

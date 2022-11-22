@@ -18,10 +18,10 @@ if(isset($_GET['cm_action']) && !empty($_GET['cm_action'])){
 	$action_id = $_GET['cm_action'];
     $personData = get_post($action_id);
 	$wp_person_post_id = $personData->ID;
-	$contact_id = get_post_meta($wp_person_post_id, "contact_id", true);
-	$person_id = get_post_meta($wp_person_post_id, "person_id", true);
-	$contact_number = get_post_meta($wp_person_post_id, "contact_number", true);
-	$country_code = get_post_meta($wp_person_post_id, "country_code", true);
+	$contact_id = get_post_meta($action_id, "contact_id", true);
+	$person_id = get_post_meta($action_id, "person_id", true);
+	$contact_number = get_post_meta($action_id, "contact_number", true);
+	$country_code = get_post_meta($action_id, "country_code", true);
 } else {
     if(isset($_GET['post']) && !empty($_GET['post'])){
 	    $action = 'Add';
@@ -44,17 +44,17 @@ if( is_array($response) ) {
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
     <div id="icon-themes" class="icon32"></div>  
-    <h2>Person Contact</h2>
+    <h2><?php esc_html_e( 'Person Contact', 'contact_manager' ); ?></h2>
                     
     <form method="post" class="wp-core-ui" action="<?php echo admin_url( 'admin-post.php' ); ?>">
         <table class="form-table">
             <tr valign="top">
-            <th scope="row">ID</th>
+            <th scope="row"><?php esc_html_e( 'ID', 'contact_manager' ); ?></th>
             <td><input type="text" name="contact_id" value="<?php echo esc_attr( $contact_id ); ?>" required/></td>
             </tr>
             
             <tr valign="top">
-            <th scope="row">Country Code</th>
+            <th scope="row"><?php esc_html_e( 'Country Code', 'contact_manager' ); ?></th>
             <td>
                 <select class="cm_country_code" name="country_code">
                     <?php
@@ -62,8 +62,9 @@ if( is_array($response) ) {
                         foreach ($country_code_list as $countryData){
                             $countryCode = "(". $countryData->callingCodes[0] .")";
                             $countryName = $countryData->name;
+	                        $value = $countryName." ". $countryCode;
                             ?>
-                                <option value="<?php echo $countryName." ". $countryCode;  ?>"><?php echo $countryName." ". $countryCode;  ?></option>
+                                <option value="<?php echo $value;  ?>" <?php if(strtolower($value) == strtolower($country_code)){ ?> selected="selected" <?php } ?>><?php echo $value;  ?></option>
                             <?php
                         }
                     }
@@ -73,7 +74,7 @@ if( is_array($response) ) {
             </tr>
             
             <tr valign="top">
-            <th scope="row">Contact</th>
+            <th scope="row"><?php esc_html_e( 'Contact', 'contact_manager' ); ?></th>
             <td><input type="text" name="contact_number" value="<?php echo esc_attr( $contact_number ); ?>" required/></td>
             </tr>
         </table>

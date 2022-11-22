@@ -21,38 +21,18 @@ $personArgs = array(
 $personList = get_posts($personArgs);
 
 ?>
-<style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
 
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-    .submitdelete{
-        color: #b32d2e;
-    }
-    #person_list {
-        margin-top: 20px
-    }
-</style>
 <div class="wrap">
     <div id="icon-themes" class="icon32"></div>
-    <h1 class="wp-heading-inline">Person List</h1>
+    <h1 class="wp-heading-inline">
+        <?php esc_html_e( 'Person List', 'contact_manager' ); ?>
+    </h1>
     <table id="person_list">
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact</th>
+            <th><?php esc_html_e( 'ID', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Name', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Email', 'contact_manager' ); ?></th>
+            <th><?php esc_html_e( 'Contact', 'contact_manager' ); ?></th>
         </tr>
 		<?php
 		if(isset($personList) && !empty($personList)){
